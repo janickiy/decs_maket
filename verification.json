@@ -105,13 +105,15 @@
     "October 24 SSH installer: plan consent gates installation; alternate /srv/meetspace path reaches completion. Ten demo phases update progress; error at 20 percent retries at the same phase, and cancelling the close confirmation retains progress. Completion opens Add account with https://meet.example.org; cancelling preserves the existing profile and https://meetspace.team server.",
     "October 24 SSH installer: 1440x1000 light and 805x768 dark layouts inspected, with a scrolling content column and no horizontal overflow. Browser warning/error log is empty. Preview returned to the first light-theme step.",
     "October 24: completed Demo new version modal has no Copy link and retains Chat meeting, Close and Meeting recordings. Scheduled Design sync modal still has Copy link and Connect. Browser warning/error log is empty.",
-    "October 24: Schedule meeting modal has scrollbar-width none and hidden WebKit scrollbar. At 1280x600 wheel scroll reaches Create meeting (scrollTop 157), Shift+Tab from Close focuses Create meeting, and Tab returns to Close. At 1440x1000 all fields and actions fit without a scrollbar; browser warning/error log is empty. No meeting was created during QA."
+    "October 24: Schedule meeting modal has scrollbar-width none and hidden WebKit scrollbar. At 1280x600 wheel scroll reaches Create meeting (scrollTop 157), Shift+Tab from Close focuses Create meeting, and Tab returns to Close. At 1440x1000 all fields and actions fit without a scrollbar; browser warning/error log is empty. No meeting was created during QA.",
+    "October 24 meeting editor redesign: 1280x720 and 1440x1000 light layouts fit fully; at 1280x600 fixed footer remains in viewport while the body scrolls; 720x768 dark layout becomes one column and all switches remain reachable by scrolling. Auto-record switch toggles, blank title invokes native validation, Shift+Tab from Close reaches submit, Cancel restores the scheduling trigger. No browser warnings/errors; no meeting data saved during QA."
   ],
   "viewports": [
     "1280x720",
     "1024x768",
     "1440x1000",
-    "1280x600"
+    "1280x600",
+    "720x768"
   ],
   "known_limits": [
     "No backend, real authentication, video/audio calls or recording",
@@ -119,7 +121,7 @@
     "Windows cmd launcher not executed on Windows; browser QA performed on macOS",
     "file:// browser QA unavailable due to browser protocol policy; HTTP version tested"
   ],
-  "latest_change": "Meeting create/schedule/edit forms hide their visual scrollbar while retaining wheel and keyboard scrolling in short windows.",
+  "latest_change": "Meeting editor redesigned with two-column desktop layout, dedicated participant/access panel, native checkbox switches, fixed header/footer, hidden body scrollbar, single-column narrow layout and restored saved access selection.",
   "automated_accounts_checks": "Isolated Node VM using actual app modules and init/render: remove inactive, active and initial accounts; fallback without a primary; last deletion stores accounts [] with null active ID and reload does not recreate it; restore exact profile/preferences/messages; add after empty without data leakage; storage failure preserves accounts; direct URLs and Ctrl/Cmd K/N are guarded in empty mode; previous migration, switching and preference isolation retained.",
   "source_commit": "89302d36f1f3a5e260f15a4b672c18d5e5436eda",
   "source_url": "https://github.com/janickiy/meet-space/tree/89302d36f1f3a5e260f15a4b672c18d5e5436eda",
@@ -130,5 +132,6 @@
   "automated_group_leave_checks": "Isolated Node VM with current chat-actions.js: six scenarios passed. Group-only menu; cancel/missing confirmation does not mutate data; confirmed leave hides group from visibility, removes folders/mute/reply/unread and preserves messages/pins/draft without a trash entry; reload and old direct navigation do not rejoin; personal-chat and stale-confirm guards; storage failure rolls back state, chat definitions and active account snapshot while leaving confirmation open.",
   "automated_invitation_qr_checks": "Bundled official Project Nayuki QR generator with MIT notice and pinned source commit. Node VM checked deterministic SVG generation, quiet zone 4, no payload interpolation into markup, seven invalid-input guards. Independent macOS Vision decoder recovered four of four exact payloads, including a 207-character URL and Cyrillic. Calls module and QR helper syntax passed.",
   "automated_ssh_installer_checks": "Isolated Node VMs with actual installer, accounts, secondary and full ten-module Desk.init/click dispatch: validate hostname/IP including IPv6 and IDN domain, SSH port/user/domain, email/path, key presence and 1 MB limit; trust/access/consent cannot be bypassed. Secrets are reset and absent from state, storage and generated log; fetch/XHR/WebSocket traps observed no calls. Ten stages, failure/retry, plan review, Back/edit reset, guarded close and stale-confirm protection passed. Complete opens actual account modal with URL and leaves active profile/account/server untouched. Empty-account public installer/onboarding guards and empty-account URL connection to Add account passed; existing active-account auth flow retained.",
-  "ssh_installer_reference": "Mobile HTML onboarding.js/onboarding.css in local mobile_maket/meetspace-refresh-20261016; Android SshWizardUi.kt and InstallerUi.kt with design-blue tablet references."
+  "ssh_installer_reference": "Mobile HTML onboarding.js/onboarding.css in local mobile_maket/meetspace-refresh-20261016; Android SshWizardUi.kt and InstallerUi.kt with design-blue tablet references.",
+  "automated_meeting_editor_checks": "Isolated Node VM: create/schedule/edit/instant field contracts, calendar date default, existing 75-minute duration, saved access/chat/date/time/switches, title and textarea HTML escaping; instant omits schedule-only controls. Passed. app.js syntax passed."
 }

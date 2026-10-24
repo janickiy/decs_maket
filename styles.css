@@ -108,6 +108,55 @@ body{overflow:hidden}.sidebar{overflow-y:auto;scrollbar-width:thin}.full-screen-
 .calendar-meeting-owner-actions>.btn{font-size:11px}
 .calendar-meeting-owner-actions>.meeting-delete-action{color:var(--danger)}
 
-/* Keep meeting forms scrollable on short windows without a visible scrollbar. */
-.modal:has(#meeting-form){overflow-y:auto;scrollbar-width:none}
-.modal:has(#meeting-form)::-webkit-scrollbar{display:none}
+/* Meeting editor: fixed header/actions and a quietly scrolling content area. */
+.modal:has(#meeting-form){width:900px;max-width:100%;max-height:calc(100dvh - 78px);padding:0;overflow:hidden;display:flex;flex-direction:column;border-radius:20px;box-shadow:0 32px 100px #111d463d}
+.meeting-editor-modal>.modal-head{margin:0;padding:28px 30px 25px;gap:16px;flex-shrink:0;align-items:center}
+.meeting-editor-emblem{display:grid;place-items:center;width:50px;height:50px;border-radius:15px;background:var(--accent-soft);color:var(--accent);box-shadow:inset 0 0 0 1px #4967eb0b;flex-shrink:0}
+.meeting-editor-emblem svg{width:25px;height:25px}
+.meeting-editor-heading{flex:1;min-width:0}
+.meeting-editor-modal .modal-head h2{font-size:24px;line-height:1.3;letter-spacing:-.65px}
+.meeting-editor-heading p{margin-top:6px;font-size:12px;color:var(--muted);line-height:1.5}
+.meeting-editor-modal .modal-head>.icon-btn{align-self:flex-start;border-radius:50%;width:32px;height:32px;background:var(--bg)}
+#meeting-form{display:flex;flex-direction:column;min-height:0}
+.meeting-editor-body{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:26px;padding:2px 30px 28px;overflow-y:auto;scrollbar-width:none;overscroll-behavior:contain;min-height:0}
+.meeting-editor-body::-webkit-scrollbar{display:none}
+.meeting-editor-main{min-width:0;padding-top:2px}
+.meeting-editor-modal .field{font-size:12px;gap:8px;margin:0 0 22px}
+.meeting-editor-modal .field input,.meeting-editor-modal .field select,.meeting-editor-modal .field textarea{border-radius:10px;min-height:44px;font-size:12px;transition:border-color .15s,box-shadow .15s}
+.meeting-editor-modal .field input:hover,.meeting-editor-modal .field select:hover,.meeting-editor-modal .field textarea:hover{border-color:color-mix(in srgb,var(--accent) 30%,var(--line))}
+.meeting-editor-modal .meeting-editor-title input{font-size:16px;font-weight:600;min-height:50px;letter-spacing:-.2px}
+.meeting-editor-modal .meeting-editor-title input::placeholder{font-weight:400;font-size:14px;letter-spacing:0}
+.meeting-editor-section{padding:20px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);margin-bottom:22px}
+.meeting-editor-section-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:15px}
+.meeting-editor-section-head h3,.meeting-editor-side>h3{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:600}
+.meeting-editor-section-head h3 svg,.meeting-editor-side>h3 svg{width:17px;height:17px;color:var(--accent)}
+.meeting-editor-section-head>span{font-size:10px;color:var(--muted);white-space:nowrap}
+.meeting-editor-time-grid{display:grid;grid-template-columns:1.3fr 1fr 1.1fr;gap:10px}
+.meeting-editor-time-grid .field{margin:0;font-size:11px;color:var(--muted)}
+.meeting-editor-time-grid input,.meeting-editor-time-grid select{padding:10px 9px}
+.meeting-editor-label{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.meeting-editor-label>span{font-weight:400;color:var(--muted);font-size:10px}
+.meeting-editor-modal .meeting-editor-description{margin:0}
+.meeting-editor-modal .meeting-editor-description textarea{min-height:110px;resize:vertical;max-height:260px;line-height:1.7}
+.meeting-editor-side{padding:20px;background:var(--bg);border:1px solid var(--line);border-radius:14px;min-width:0;align-self:start}
+.meeting-editor-side>h3{margin-bottom:20px}
+.meeting-editor-side .field{margin-bottom:16px;font-size:11px}
+.meeting-editor-side .field select{font-size:11px;padding-left:10px;padding-right:6px}
+.meeting-editor-options{margin-top:20px;border-top:1px solid var(--line);padding-top:4px}
+.meeting-editor-option{display:grid;grid-template-columns:27px 1fr 32px;gap:8px;align-items:center;padding-top:17px;cursor:pointer}
+.meeting-editor-option-icon{color:var(--muted)}
+.meeting-editor-option-icon svg{width:18px;height:18px}
+.meeting-editor-option strong{font-size:12px;display:block;font-weight:600}
+.meeting-editor-option small{font-size:10px;display:block;color:var(--muted);margin-top:3px;line-height:1.45}
+.meeting-editor-option input{appearance:none;-webkit-appearance:none;width:32px;height:19px;min-width:32px;padding:2px;border:0;border-radius:20px;background:color-mix(in srgb,var(--muted) 36%,var(--surface));cursor:pointer;margin:0;transition:background .15s}
+.meeting-editor-option input:before{content:'';display:block;width:15px;height:15px;background:var(--surface);border-radius:50%;box-shadow:0 1px 3px #0002;transition:transform .15s}
+.meeting-editor-option input:checked{background:var(--accent)}
+.meeting-editor-option input:checked:before{transform:translateX(13px);background:#fff}
+.meeting-editor-option input:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.meeting-editor-footer.modal-actions{margin:0;padding:18px 30px;border-top:1px solid var(--line);background:var(--surface);align-items:center;flex-shrink:0;gap:10px}
+.meeting-editor-footer .btn{min-height:44px;border-radius:10px;padding:12px 18px}
+.meeting-editor-footer .btn-primary{box-shadow:0 4px 12px #4967eb26}
+.meeting-editor-footer-note{display:flex;align-items:center;gap:7px;margin-right:auto;font-size:10px;color:var(--muted)}
+.meeting-editor-footer-note svg{width:14px;height:14px}
+@media(max-width:760px){.modal:has(#meeting-form){width:600px}.meeting-editor-body{grid-template-columns:1fr;gap:22px;padding:0 22px 22px}.meeting-editor-modal>.modal-head{padding:22px;gap:12px}.meeting-editor-modal .modal-head h2{font-size:21px}.meeting-editor-heading p{font-size:11px}.meeting-editor-side{padding:18px}.meeting-editor-footer.modal-actions{padding:16px 22px}.meeting-editor-footer-note{display:none}.meeting-editor-footer .btn-primary{flex:1}.meeting-editor-emblem{width:42px;height:42px;border-radius:12px}}
+@media(max-width:460px){.meeting-editor-time-grid{grid-template-columns:1fr 1fr}.meeting-editor-time-grid .field:first-child{grid-column:1/-1}.meeting-editor-emblem{display:none}.meeting-editor-modal .modal-head h2{font-size:19px}.meeting-editor-section-head{align-items:flex-start;flex-direction:column;gap:6px}.meeting-editor-footer .btn{font-size:11px;padding:10px 12px}}
