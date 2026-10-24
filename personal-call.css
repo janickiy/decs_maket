@@ -1,0 +1,224 @@
+/* Personal calls have a dedicated, dark stage in either application theme. */
+.personal-call-room {
+  --pc-bg: #141f31;
+  --pc-stage: #202c42;
+  --pc-border: #35445d;
+  --pc-text: #e7efff;
+  --pc-muted: #98abc6;
+  color-scheme: dark;
+  display: grid;
+  grid-template-rows: auto minmax(340px, 1fr) auto;
+  gap: 24px;
+  width: 100%;
+  height: calc(100vh - 38px);
+  height: calc(100dvh - 38px);
+  padding: 24px 32px 26px;
+  overflow: auto;
+  color: var(--pc-text);
+  background: var(--pc-bg);
+}
+.personal-call-header,
+.personal-call-heading,
+.personal-call-timer {
+  display: flex;
+  align-items: center;
+}
+.personal-call-header { justify-content: space-between; gap: 24px; }
+.personal-call-heading { gap: 16px; min-width: 0; }
+.personal-call-heading h1 { font-size: 25px; font-weight: 600; letter-spacing: -.65px; line-height: 1.35; }
+.personal-call-heading p { display: flex; align-items: center; gap: 6px; margin-top: 5px; color: var(--pc-muted); font-size: 12px; }
+.personal-call-heading p svg { width: 14px; height: 14px; }
+.personal-call-back {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 48px;
+  height: 48px;
+  border: 1px solid var(--pc-border);
+  border-radius: 14px;
+  color: #dbe6f9;
+  background: #263349;
+}
+.personal-call-back:hover { background: #33425b; }
+.personal-call-back svg { width: 23px; height: 23px; }
+.personal-call-timer {
+  flex: none;
+  gap: 9px;
+  padding: 10px 16px;
+  border: 1px solid var(--pc-border);
+  border-radius: 25px;
+  background: #223148;
+  color: #c2d4f5;
+  font-size: 14px;
+  font-variant-numeric: tabular-nums;
+}
+.personal-call-timer svg { width: 16px; height: 16px; color: #7dccbd; }
+.personal-call-clock { min-width: 41px; }
+.personal-call-stage {
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-width: 0;
+  min-height: 340px;
+  isolation: isolate;
+  overflow: hidden;
+  border: 1px solid var(--pc-border);
+  border-radius: 24px;
+  background: radial-gradient(ellipse at 50% 46%, #2a3853 0, var(--pc-stage) 58%, #1e2a40 100%);
+}
+.personal-call-peer { display: flex; flex-direction: column; align-items: center; padding: 28px; text-align: center; max-width: 100%; }
+.personal-call-avatar {
+  display: grid;
+  place-items: center;
+  width: clamp(138px, 14vw, 184px);
+  height: clamp(138px, 14vw, 184px);
+  margin: 0 auto 28px;
+  border: 1.5px solid #59749a;
+  border-radius: 50%;
+  box-shadow: 0 0 0 20px #60799e06, 0 0 0 40px #60799e04;
+  background: #425a80;
+  color: #e3edff;
+  font-size: clamp(43px, 4.5vw, 61px);
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: -2px;
+}
+.personal-call-peer h2 { margin: 4px 0 12px; font-size: clamp(26px, 2.6vw, 36px); line-height: 1.25; font-weight: 600; letter-spacing: -.9px; overflow-wrap: anywhere; }
+.personal-call-status { color: #8ed9c5; font-size: 16px; }
+.personal-call-camera-note { display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 25px; color: var(--pc-muted); font-size: 12px; }
+.personal-call-camera-note svg { width: 16px; height: 16px; }
+.personal-call-self {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 148px;
+  height: 184px;
+  padding: 18px 12px 48px;
+  border: 1px solid #53647e;
+  border-radius: 21px;
+  background: #344158;
+  box-shadow: 0 8px 24px #0d16231a;
+}
+.personal-call-self-camera { position: absolute; top: 13px; right: 13px; color: #a4b3cc; }
+.personal-call-self-camera svg { width: 16px; height: 16px; }
+.personal-call-self-avatar { display: grid; place-items: center; width: 59px; height: 59px; border: 1px solid #7185a6; border-radius: 50%; background: #465b7c; color: #d4e1f8; font-size: 20px; }
+.personal-call-self.camera-on { background: radial-gradient(ellipse at 65% 20%, #68809855, transparent 70%), #35495b; }
+.personal-call-self-demo { margin-top: 9px; color: #c3d1e5; font-size: 10px; }
+.personal-call-self-caption { position: absolute; bottom: 10px; left: 10px; right: 10px; display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 9px 11px; border-radius: 11px; background: #1c2a42; color: #d6e2f5; font-size: 11px; }
+.personal-call-self-caption strong { font-weight: 500; }
+.personal-call-self-caption svg { width: 14px; height: 14px; }
+.personal-call-footer { text-align: center; }
+.personal-call-caption { margin: -1px 0 19px; color: #a5b7d0; font-size: 12px; }
+.personal-call-controls { display: flex; align-items: flex-start; justify-content: center; gap: 29px; }
+.personal-call-control { display: flex; flex-direction: column; align-items: center; gap: 10px; min-width: 71px; padding: 0; color: #b8c8e0; }
+.personal-call-control > span { display: grid; place-items: center; width: 64px; height: 62px; border: 1px solid #415574; border-radius: 20px; background: #2b3a53; transition: background .15s, border-color .15s; }
+.personal-call-control svg { width: 27px; height: 27px; }
+.personal-call-control small { font-size: 11px; font-weight: 500; line-height: 1.3; }
+.personal-call-control:hover > span { background: #3a4d6b; border-color: #6d83a6; }
+.personal-call-control.is-on > span { background: #d8e6ff; border-color: #d8e6ff; color: #2e4566; }
+.personal-call-control.is-on:hover > span { background: #c5d9fb; }
+.personal-call-control.is-off > span { color: #b5c6e2; }
+.personal-call-control.personal-call-end { margin-left: 10px; color: #ffd3d9; }
+.personal-call-control.personal-call-end > span { background: #dc5068; border-color: #e2677b; color: white; }
+.personal-call-control.personal-call-end:hover > span { background: #ee617a; border-color: #f57b8e; }
+.personal-call-room button:focus-visible { outline: 2px solid #bcd5ff; outline-offset: 5px; }
+.personal-call-control:focus-visible { outline: none !important; }
+.personal-call-control:focus-visible > span { outline: 2px solid #bcd5ff; outline-offset: 5px; }
+.personal-call-footer .personal-call-demo-note { margin-top: 14px; color: #8fa1bc; font-size: 10px; }
+
+/* Screen sharing keeps the participant and self preview in a side column. */
+.personal-call-stage.sharing { grid-template-columns: minmax(0, 1fr) 160px; gap: 24px; padding: 24px; }
+.personal-call-share { display: flex; align-items: stretch; width: 100%; height: 100%; min-width: 0; }
+.personal-call-share-preview { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; width: 100%; min-height: 280px; padding: 32px; border: 1px solid #40526d; border-radius: 16px; background: #182438; text-align: center; }
+.personal-call-share-preview > svg { width: 50px; height: 50px; color: #90b4ec; }
+.personal-call-share-preview h2 { font-size: 24px; line-height: 1.3; }
+.personal-call-share-preview p { max-width: 330px; color: #a7b9d4; font-size: 13px; }
+.personal-call-stop-share { margin-top: 4px; padding: 10px 15px; border: 1px solid #56739a; border-radius: 9px; background: #30496b; color: #e6efff; font-size: 12px; font-weight: 500; }
+.personal-call-stop-share:hover { background: #3f5b81; }
+.personal-call-stage.sharing .personal-call-self { right: 24px; top: 24px; width: 160px; }
+.personal-call-peer.compact { align-self: end; width: 160px; padding: 20px 7px 10px; }
+.personal-call-peer.compact .personal-call-avatar { width: 62px; height: 62px; margin-bottom: 15px; font-size: 22px; letter-spacing: -.5px; box-shadow: none; }
+.personal-call-peer.compact h2 { margin: 0 0 7px; font-size: 16px; letter-spacing: -.2px; }
+.personal-call-peer.compact .personal-call-status { font-size: 12px; }
+.personal-call-peer.compact .personal-call-camera-note { margin-top: 12px; gap: 5px; font-size: 10px; line-height: 1.5; }
+.personal-call-peer.compact .personal-call-camera-note svg { width: 13px; height: 13px; }
+
+/* Minimized calls remain available in the application toolbar. */
+.topbar.has-personal-call .global-search { display: none; }
+.personal-call-resume-banner { display: flex; align-items: center; gap: 12px; min-width: 0; height: 40px; padding: 5px 6px 5px 12px; border: 1px solid #3b526f; border-radius: 11px; background: #1d2c42; color: #e6efff; }
+.personal-call-resume-banner > div { display: flex; align-items: center; gap: 8px; min-width: 0; }
+.personal-call-resume-banner > div > svg { width: 16px; height: 16px; color: #8cdbc0; }
+.personal-call-resume-banner strong { max-width: 150px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 11px; font-weight: 500; }
+.personal-call-resume-banner time { flex: none; color: #b8cbe7; font-size: 11px; font-variant-numeric: tabular-nums; }
+.personal-call-resume-button { padding: 6px 10px; border-radius: 7px; background: #d5e5ff; color: #243c5d; font-size: 11px; font-weight: 600; white-space: nowrap; }
+.personal-call-resume-button:hover { background: #e8f0ff; }
+.personal-call-banner-end { display: grid; place-items: center; flex: none; width: 28px; height: 28px; border-radius: 7px; background: #a83e54; color: #fff; }
+.personal-call-banner-end:hover { background: #d64e68; }
+.personal-call-banner-end svg { width: 16px; height: 16px; }
+.personal-call-resume-banner button:focus-visible { outline: 2px solid #9ebeea; outline-offset: 2px; }
+
+@media (max-height: 800px) {
+  .personal-call-room { gap: 18px; padding-top: 18px; padding-bottom: 18px; }
+  .personal-call-avatar { width: 138px; height: 138px; margin-bottom: 20px; font-size: 45px; }
+  .personal-call-peer h2 { font-size: 29px; }
+  .personal-call-camera-note { margin-top: 17px; }
+  .personal-call-caption { margin-bottom: 14px; }
+  .personal-call-control > span { width: 57px; height: 55px; border-radius: 17px; }
+  .personal-call-control { gap: 8px; }
+  .personal-call-control svg { width: 25px; height: 25px; }
+  .personal-call-self { width: 128px; height: 158px; }
+  .personal-call-self-avatar { width: 50px; height: 50px; font-size: 18px; }
+  .personal-call-peer.compact { padding-top: 12px; }
+  .personal-call-peer.compact .personal-call-camera-note { margin-top: 8px; }
+  .personal-call-stage.sharing { min-height: 370px; }
+}
+@media (max-width: 1100px) {
+  .personal-call-room { padding-left: 24px; padding-right: 24px; }
+  .personal-call-stage { border-radius: 20px; }
+  .personal-call-self { top: 20px; right: 20px; }
+  .personal-call-controls { gap: 22px; }
+  .personal-call-resume-banner { gap: 8px; }
+  .personal-call-resume-banner strong { max-width: 106px; }
+}
+@media (max-width: 760px) {
+  .personal-call-room { padding: 18px; gap: 17px; grid-template-rows: auto minmax(385px, 1fr) auto; }
+  .personal-call-heading { gap: 11px; }
+  .personal-call-heading h1 { font-size: 20px; }
+  .personal-call-heading p { font-size: 10px; }
+  .personal-call-back { width: 40px; height: 42px; border-radius: 11px; }
+  .personal-call-timer { padding: 8px 10px; gap: 6px; font-size: 12px; }
+  .personal-call-timer svg { width: 14px; height: 14px; }
+  .personal-call-peer { padding: 106px 20px 24px; }
+  .personal-call-avatar { width: 122px; height: 122px; margin-bottom: 20px; font-size: 42px; }
+  .personal-call-peer h2 { font-size: 26px; }
+  .personal-call-status { font-size: 14px; }
+  .personal-call-camera-note { margin-top: 17px; font-size: 11px; }
+  .personal-call-self { top: 14px; right: 14px; width: 83px; height: 108px; border-radius: 14px; padding: 12px 8px 31px; }
+  .personal-call-self-camera { top: 8px; right: 8px; }
+  .personal-call-self-camera svg { width: 12px; height: 12px; }
+  .personal-call-self-avatar { width: 35px; height: 35px; font-size: 13px; }
+  .personal-call-self-caption { left: 5px; right: 5px; bottom: 5px; padding: 5px 7px; border-radius: 7px; font-size: 9px; }
+  .personal-call-self-caption svg { width: 11px; height: 11px; }
+  .personal-call-self-demo { margin-top: 4px; font-size: 8px; }
+  .personal-call-controls { gap: 15px; }
+  .personal-call-control { min-width: 60px; }
+  .personal-call-control > span { width: 53px; height: 53px; border-radius: 16px; }
+  .personal-call-control.personal-call-end { margin-left: 0; }
+  .personal-call-control small { font-size: 10px; }
+  .personal-call-stage.sharing { grid-template-columns: minmax(0, 1fr) 112px; gap: 12px; padding: 14px; min-height: 390px; }
+  .personal-call-stage.sharing .personal-call-self { top: 14px; right: 14px; width: 112px; height: 125px; }
+  .personal-call-peer.compact { width: 112px; padding: 10px 0; }
+  .personal-call-peer.compact h2 { font-size: 14px; }
+  .personal-call-share-preview { padding: 20px 14px; }
+  .personal-call-share-preview > svg { width: 36px; height: 36px; }
+  .personal-call-share-preview h2 { font-size: 18px; }
+  .personal-call-share-preview p { font-size: 11px; }
+  .personal-call-resume-banner strong { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .personal-call-control > span { transition: none; }
+}

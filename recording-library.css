@@ -1,0 +1,60 @@
+/* Recording actions use a viewport menu so scrolling cards never clip it. */
+.record-library-card .record-thumbnail{width:100%}
+.record-library-card .record-library-copy{min-width:0}
+.record-library-copy h3 button{padding:0;text-align:left;font:inherit;color:inherit;overflow-wrap:anywhere}
+.record-library-copy h3 button:hover{color:var(--accent)}
+.record-library-card .record-library-owner{margin-top:5px;font-size:10px;overflow-wrap:anywhere}
+.record-library-card .record-actions{gap:6px}
+.record-library-type{font-size:9px;color:var(--muted);margin-right:auto;white-space:nowrap}
+.record-library-card .record-menu-trigger{color:var(--muted)}
+.record-library-card .record-menu-trigger[aria-expanded=true],.record-detail-header-actions .record-menu-trigger[aria-expanded=true]{color:var(--accent);background:var(--accent-soft)}
+.records-list .record-library-card .record-content{display:flex;align-items:center;justify-content:space-between;gap:20px;min-width:0}
+.records-list .record-library-card .record-library-copy{flex:1}
+.records-list .record-library-card .record-library-copy h3{margin-bottom:5px}
+.records-list .record-library-card .record-actions{display:flex;flex:none;gap:7px;margin:0}
+.records-list .record-library-card .record-library-type{margin-right:10px}
+.record-library-empty{grid-column:1 / -1;padding:52px 20px;text-align:center;border:1px dashed var(--line);border-radius:12px;background:var(--surface)}
+.record-library-empty>svg{width:36px;height:36px;color:var(--muted);margin-bottom:14px}
+.record-library-empty h2{font-size:17px}
+.record-library-empty p{color:var(--muted);font-size:12px;margin:10px 0 20px}
+.record-library-unavailable{margin-top:20px;padding:70px 20px}
+.record-library-unavailable h1{font-size:24px}
+.record-library-footer{margin-top:23px;display:flex;justify-content:flex-end}
+.record-past-link{display:inline-flex;align-items:center;gap:7px;padding:7px 0;font-size:11px;color:var(--muted)}
+.record-past-link:hover{color:var(--accent)}
+.record-past-link svg{width:15px;height:15px}
+.record-detail-header-actions{display:flex;align-items:center;gap:10px;flex-shrink:0}
+.record-detail-header-actions .record-menu-trigger{width:38px;height:38px;background:var(--surface);border:1px solid var(--line)}
+.record-library-details{margin:0 0 18px;font-size:11px}
+.record-library-details>div{display:flex;justify-content:space-between;align-items:baseline;gap:20px;padding:8px 0;border-bottom:1px solid var(--line)}
+.record-library-details dt{color:var(--muted);flex-shrink:0}
+.record-library-details dd{margin:0;text-align:right;overflow-wrap:anywhere}
+.record-library-menu{position:fixed;z-index:90;width:254px;max-width:calc(100vw - 24px);padding:6px;background:var(--surface);border:1px solid var(--line);border-radius:10px;box-shadow:0 12px 40px #17203729;color:var(--ink)}
+.record-library-menu [role=menuitem]{display:flex;align-items:center;gap:10px;width:100%;padding:10px 11px;border-radius:6px;text-align:left;font-size:11px;line-height:1.5}
+.record-library-menu [role=menuitem]:hover,.record-library-menu [role=menuitem]:focus{background:var(--surface2)}
+.record-library-menu [role=menuitem]:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+.record-library-menu [role=menuitem] svg{width:16px;height:16px}
+.record-library-menu .record-menu-danger{color:var(--danger)}
+.record-library-menu p{font-size:9px;color:var(--muted);padding:8px 11px 4px;line-height:1.6;border-top:1px solid var(--line);margin-top:4px}
+.record-file-heading{display:flex;align-items:center;gap:12px;margin-bottom:20px}
+.record-file-heading>svg{width:35px;height:35px;color:var(--accent);padding:6px;background:var(--accent-soft);border-radius:8px}
+.record-file-heading h3{font-size:14px}
+.record-file-heading p{font-size:11px;color:var(--muted);margin-top:4px}
+.record-delete-dialog>p{font-size:12px;line-height:1.8}
+.record-delete-dialog>.record-delete-title{font-weight:600;margin-bottom:14px}
+.record-delete-dialog>.modal-note{font-size:11px;margin-top:14px}
+.record-delete-error{color:var(--danger);margin:12px 0}
+@media(max-width:1180px){.records-list .record-library-card .record-library-type{display:none}.records-list .record-library-card .record-content{gap:12px}}
+@media(max-width:700px){.records-list .record-library-card .record-content{align-items:stretch;flex-direction:column;gap:10px}.records-list .record-library-card .record-actions{justify-content:flex-end}.record-library-detail .page-heading{align-items:flex-start;flex-direction:column;gap:12px}.record-library-details>div{gap:12px}.record-library-details dd{max-width:62%}.record-library-footer{justify-content:flex-start}}
+
+.record-overview-layout{grid-template-columns:minmax(0,1.75fr) minmax(300px,1fr);align-items:start}
+.record-overview-layout>.record-player{min-width:0}
+.record-overview-layout .record-player>.row>span:first-child{min-width:0;overflow-wrap:anywhere;font-size:11px}
+.record-overview-layout .record-player .record-mini-grid{width:72%;max-width:440px;gap:10px}
+.record-overview-layout .record-player .record-mini-grid>div{height:auto;aspect-ratio:2.2}
+.record-overview-layout .record-about{margin:0;padding:24px;min-width:0}
+.record-about h3{font-size:16px;margin-bottom:20px}
+.record-about .record-library-details{line-height:1.7;margin-bottom:24px}
+.record-about-actions{display:flex;flex-direction:column;gap:10px}
+.record-about-actions>.btn{width:100%;justify-content:center;font-size:11px;white-space:normal}
+@media(max-width:950px){.record-overview-layout{grid-template-columns:1fr}.record-overview-layout .record-about{padding:22px}.record-about-actions{flex-direction:row;flex-wrap:wrap}.record-about-actions>.btn{width:auto;flex:1 1 210px}}
