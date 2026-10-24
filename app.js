@@ -165,25 +165,29 @@ D.screens.calendar=()=>{const year=state.calendarYear,month=state.calendarMonth,
 function showMeetingInformation(id){
   const meeting=state.meetings.find(item=>item.id===id);
   if(!meeting){D.toast('Встреча больше недоступна');return;}
-  const status=meeting.status==='active'?'Идёт сейчас':meeting.status==='past'?'Завершена':'Запланирована';
+  const active=meeting.status==='active',past=meeting.status==='past';
+  const status=active?'Идёт сейчас':past?'Завершена':'Запланирована';
   const date=meeting.date?new Date(meeting.date+'T12:00:00').toLocaleDateString('ru-RU',{day:'numeric',month:'long',year:'numeric'}):'Постоянная комната';
   const owner=meeting.mine||meeting.owner==='Вы'?`${state.profile.name} (вы)`:meeting.owner;
+  const fact=(symbol,label,value)=>`<div><span class="meeting-fact-icon" aria-hidden="true">${icon(symbol)}</span><div><dt>${label}</dt><dd>${value}</dd></div></div>`;
   D.openModal(meeting.title,`<div id="calendar-meeting-info" class="calendar-meeting-info">
-    <span class="badge ${meeting.status==='active'?'green':'blue'}">${status}</span>
-    <dl class="calendar-meeting-facts">
-      <div>${icon('CalendarDays')}<div><dt>Дата и время</dt><dd>${esc(date)}${meeting.time?` · ${esc(meeting.time)}`:''}<small>Москва · UTC+3</small></dd></div></div>
-      <div>${icon('Clock')}<div><dt>Длительность</dt><dd>${meeting.duration?`${esc(meeting.duration)} мин`:'Без ограничения'}</dd></div></div>
-      <div>${icon('User')}<div><dt>Организатор</dt><dd>${esc(owner||'Не указан')}</dd></div></div>
-      <div>${icon('Users')}<div><dt>Участники</dt><dd>${esc(meeting.people||0)} в списке встречи</dd></div></div>
-    </dl>
-    <section class="calendar-meeting-description"><h3>О встрече</h3><p>${esc(meeting.description||'Описание пока не добавлено.')}</p></section>
-    <div class="calendar-meeting-actions">
-      <div class="calendar-meeting-secondary">${meeting.status==='past'?'':`<button class="btn btn-secondary" data-action="copy-meeting" data-id="${esc(meeting.id)}">${icon('Link')}Скопировать ссылку</button>`}<button class="btn btn-secondary" data-action="meeting-chat" data-id="${esc(meeting.id)}">${icon('MessageCircle')}Чат встречи</button></div>
-      ${meeting.mine?`<div class="calendar-meeting-owner-actions">${canEditMeeting(meeting)?`<button class="btn btn-secondary" data-action="edit-meeting" data-id="${esc(meeting.id)}">${icon('Pencil')}Изменить встречу</button>`:''}<button class="btn btn-secondary meeting-delete-action" data-action="delete-meeting" data-id="${esc(meeting.id)}">${icon('Trash2')}Удалить встречу</button></div>`:''}
-      <div class="modal-actions"><button class="btn btn-secondary" data-action="close-modal">Закрыть</button><button class="btn btn-primary" data-action="${meeting.status==='past'?'navigate':'join-meeting'}" data-value="recordings" data-id="${esc(meeting.id)}">${icon(meeting.status==='past'?'CirclePlay':'Video')}${meeting.status==='past'?'Записи встреч':'Подключиться'}</button></div>
+    <div class="calendar-meeting-content">
+      <dl class="calendar-meeting-facts">
+        ${fact('CalendarDays','Дата и время',`${esc(date)}<small>${meeting.time?`<b>${esc(meeting.time)}</b><span> · </span>`:''}Москва · UTC+3</small>`)}
+        ${fact('Clock','Длительность',meeting.duration?`${esc(meeting.duration)} <span class="meeting-fact-unit">мин</span>`:'Без ограничения')}
+        ${fact('User','Организатор',esc(owner||'Не указан'))}
+        ${fact('Users','Участники',`${esc(meeting.people||0)} <span class="meeting-fact-unit">в списке встречи</span>`)}
+      </dl>
+      <section class="calendar-meeting-description"><h3>О встрече</h3><p class="${meeting.description?'':'is-empty'}">${esc(meeting.description||'Описание пока не добавлено.')}</p></section>
+      <div class="calendar-meeting-secondary">${past?'':`<button class="btn btn-secondary" data-action="copy-meeting" data-id="${esc(meeting.id)}">${icon('Link')}Скопировать ссылку</button>`}<button class="btn btn-secondary" data-action="meeting-chat" data-id="${esc(meeting.id)}">${icon('MessageCircle')}Чат встречи</button></div>
     </div>
+    <footer class="calendar-meeting-footer">
+      ${meeting.mine?`<div class="calendar-meeting-owner-actions">${canEditMeeting(meeting)?`<button class="btn meeting-edit-action" data-action="edit-meeting" data-id="${esc(meeting.id)}" aria-label="Изменить встречу" title="Изменить встречу">${icon('Pencil')}<span>Изменить</span></button>`:''}<button class="icon-btn meeting-delete-action" data-action="delete-meeting" data-id="${esc(meeting.id)}" aria-label="Удалить встречу" title="Удалить встречу">${icon('Trash2')}</button></div>`:''}
+      <div class="modal-actions"><button class="btn btn-secondary" data-action="close-modal">Закрыть</button><button class="btn btn-primary" data-action="${past?'navigate':'join-meeting'}" data-value="recordings" data-id="${esc(meeting.id)}">${icon(past?'CirclePlay':'Video')}${past?'Записи встреч':'Подключиться'}</button></div>
+    </footer>
   </div>`);
-  $('.modal')?.classList.add('calendar-meeting-modal');
+  const modal=$('.modal');modal.classList.add('calendar-meeting-modal');modal.dataset.meetingStatus=meeting.status;
+  $('.modal-head',modal).innerHTML=`<span class="meeting-info-emblem" aria-hidden="true">${icon(active?'Video':past?'Check':'CalendarClock')}</span><div class="meeting-info-heading"><span class="meeting-info-status ${active?'is-active':past?'is-past':''}">${active?'<i class="dot"></i>':icon(past?'Check':'CalendarDays')}${status}</span><h2 id="modal-title">${esc(meeting.title)}</h2></div><button class="icon-btn" data-action="close-modal" aria-label="Закрыть">${icon('X')}</button>`;
 }
 function openMeetingInformation(id){
   const meeting=state.meetings.find(item=>item.id===id);
