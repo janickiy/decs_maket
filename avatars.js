@@ -62,12 +62,16 @@
     if (!editor?.image) return;
     const canvas = $('#avatar-canvas'); if (!canvas) return;
     const context = canvas.getContext('2d'), img = editor.image;
-    const zoom = Number($('#avatar-zoom').value), x = Number($('#avatar-x').value), y = Number($('#avatar-y').value);
+    const zoom = Number($('#avatar-zoom').value), x = (100-Number($('#avatar-x').value))/2, y = (100-Number($('#avatar-y').value))/2;
     const side = Math.min(img.naturalWidth, img.naturalHeight) / zoom;
     context.fillStyle = '#ffffff'; context.fillRect(0, 0, canvas.width, canvas.height);
     context.drawImage(img, (img.naturalWidth - side) * x / 100, (img.naturalHeight - side) * y / 100, side, side, 0, 0, canvas.width, canvas.height);
     $('#avatar-zoom-value').textContent = `${Math.round(zoom * 100)}%`;
-    $('#avatar-x-value').textContent = `${x}%`; $('#avatar-y-value').textContent = `${y}%`;
+    for (const [key, extent] of [['x', img.naturalWidth-side], ['y', img.naturalHeight-side]]) {
+      const input = $('#avatar-'+key);
+      input.disabled = extent < .001;
+      $('#avatar-'+key+'-value').textContent = `${Math.round(Number(input.value))}%`;
+    }
     editor.crop = {zoom, x, y};
   }
   function decode(src) {
@@ -80,11 +84,13 @@
     el.setAttribute('aria-busy', String(value));
     el.querySelectorAll('[data-action="avatar-save"], [data-action="avatar-choose"], input[type="range"]').forEach(control => {control.disabled = value || (control.type === 'range' && !editor?.image);});
     if ($('#avatar-save')) $('#avatar-save').disabled = value || !editor?.image;
+    if (!value && editor?.image) draw();
   }
   function showImage(image, original, crop = {zoom:1, x:50, y:50}) {
     editor.image = image; editor.original = original;
     $('#avatar-editor').classList.add('has-image');
-    $('#avatar-zoom').value = crop.zoom; $('#avatar-x').value = crop.x; $('#avatar-y').value = crop.y;
+    $('#avatar-file-label').textContent = 'Заменить фото';
+    $('#avatar-zoom').value = crop.zoom; $('#avatar-x').value = 100-2*crop.x; $('#avatar-y').value = 100-2*crop.y;
     busy(false); draw();
   }
   async function loadFile(file) {
@@ -117,8 +123,9 @@
     if (remove) {
       baseOpen('Удалить фото?', `<div id="avatar-editor"><p class="modal-note">Вместо фотографии ${kind === 'group' ? 'группы' : 'профиля'} будут отображаться инициалы. Вы сможете добавить новое фото в любое время.</p><div class="modal-actions"><button type="button" class="btn btn-secondary" data-action="close-modal">Отмена</button><button type="button" class="btn btn-danger" data-action="avatar-delete-confirm">Удалить фото</button></div></div>`); return;
     }
-    baseOpen(heading, `<div id="avatar-editor" class="avatar-editor ${kind}"><div class="avatar-editor-heading"><span>${I('Camera')}</span><div><strong>${E(data.name)}</strong><p>Выберите фото и настройте, как оно будет выглядеть.</p></div></div><div class="avatar-editor-body"><div class="avatar-workspace"><div class="avatar-crop"><canvas id="avatar-canvas" width="512" height="512" role="img" aria-label="Предпросмотр аватарки"></canvas><div class="avatar-placeholder">${I(kind === 'group' ? 'Users' : 'UserRound')}</div></div><span>${kind === 'group' ? 'Фото группы' : 'Так вас увидят участники'}</span></div><div class="avatar-editor-tools"><button type="button" class="btn btn-secondary" data-action="avatar-choose">${I('Upload')}Выбрать файл</button><input type="file" id="avatar-file" accept="image/jpeg,image/png,image/webp" hidden><p class="avatar-file-note">JPG, PNG или WebP<br>Размер файла — до 5 МБ</p><div class="avatar-adjustments">${[['zoom','Масштаб',1,3,.05,1,'100%'],['x','По горизонтали',0,100,1,50,'50%'],['y','По вертикали',0,100,1,50,'50%']].map(([key,label,min,max,step,value,output])=>`<label for="avatar-${key}">${label}<output id="avatar-${key}-value">${output}</output></label><input id="avatar-${key}" type="range" min="${min}" max="${max}" step="${step}" value="${value}" disabled>`).join('')}<button type="button" class="avatar-reset" data-action="avatar-reset">${I('RotateCcw')}Сбросить кадр</button></div></div></div><p id="avatar-error" class="avatar-error" role="alert"></p><footer class="avatar-editor-footer"><span>Фото сохранится в этом браузере</span><button type="button" class="btn btn-secondary" data-action="close-modal">Отмена</button><button type="button" id="avatar-save" class="btn btn-primary" data-action="avatar-save" disabled>${I('Check')}Сохранить фото</button></footer></div>`, true);
+    baseOpen(heading, `<div id="avatar-editor" class="avatar-editor ${kind}"><div class="avatar-editor-body"><div class="avatar-workspace"><div class="avatar-crop"><canvas id="avatar-canvas" width="512" height="512" tabindex="0" role="img" aria-label="Область обрезки фотографии. Перетащите фото или используйте стрелки."></canvas><div class="avatar-crop-guide" aria-hidden="true"></div><div class="avatar-placeholder">${I(kind === 'group' ? 'Users' : 'UserRound')}</div></div><p class="avatar-drag-hint">Перетащите фото или используйте ползунки.</p></div><div class="avatar-editor-tools"><button type="button" class="btn avatar-file-choice" data-action="avatar-choose">${I('Upload')}<span id="avatar-file-label">Добавить фото</span></button><input type="file" id="avatar-file" accept="image/jpeg,image/png,image/webp" hidden><p class="avatar-file-note">JPG, PNG или WebP · до 5 МБ</p><div class="avatar-adjustments">${[['zoom','Масштаб',1,3,.01,1,'100%'],['x','По горизонтали',-100,100,1,0,'0%'],['y','По вертикали',-100,100,1,0,'0%']].map(([key,label,min,max,step,value,output])=>`<label for="avatar-${key}">${label}<output id="avatar-${key}-value">${output}</output></label><input id="avatar-${key}" type="range" min="${min}" max="${max}" step="${step}" value="${value}" disabled>`).join('')}<button type="button" class="avatar-reset" data-action="avatar-reset">Сбросить</button></div></div><p id="avatar-error" class="avatar-error" role="alert"></p></div><footer class="avatar-editor-footer"><div><button type="button" class="btn btn-secondary" data-action="close-modal">Отмена</button><button type="button" id="avatar-save" class="btn btn-primary" data-action="avatar-save" disabled>${I('Check')}Сохранить фото</button></div><p>Изображение остаётся в макете и не отправляется на сервер.</p></footer></div>`, true);
     $('.modal').classList.add('avatar-editor-modal');
+    bindDragging();
     const src = data.photo?.original || data.photo?.src;
     if (safeImage(src)) {
       busy(true);
@@ -131,7 +138,7 @@
     'avatar-edit':button => openEditor(button),
     'avatar-remove':button => openEditor(button, true),
     'avatar-choose':() => $('#avatar-file')?.click(),
-    'avatar-reset':() => {if (!editor?.image) return; $('#avatar-zoom').value = 1; $('#avatar-x').value = 50; $('#avatar-y').value = 50; draw();},
+    'avatar-reset':() => {if (!editor?.image) return; $('#avatar-zoom').value = 1; $('#avatar-x').value = 0; $('#avatar-y').value = 0; draw();},
     'avatar-save':() => {
       if (!editor?.image) return;
       const photo = {src:$('#avatar-canvas').toDataURL('image/jpeg', .88), original:editor.original, crop:editor.crop};
@@ -140,6 +147,35 @@
     },
     'avatar-delete-confirm':() => {if (editor && persist(editor, null)) {finish(); D.toast('Фото удалено');}}
   });
+  const clamp = value => Math.min(100, Math.max(-100, value));
+  function bindDragging() {
+    const canvas=$('#avatar-canvas'); let drag=null;
+    canvas.addEventListener('pointerdown',event=>{
+      if(event.button!==0 || !editor?.image || $('#avatar-editor').getAttribute('aria-busy')==='true')return;
+      event.preventDefault();canvas.focus({preventScroll:true});
+      const side=Math.min(editor.image.naturalWidth,editor.image.naturalHeight)/editor.crop.zoom;
+      drag={pointer:event.pointerId,x:event.clientX,y:event.clientY,left:Number($('#avatar-x').value),top:Number($('#avatar-y').value),side,w:editor.image.naturalWidth,h:editor.image.naturalHeight,current:editor};
+      canvas.setPointerCapture(event.pointerId);canvas.classList.add('dragging');
+    });
+    canvas.addEventListener('pointermove',event=>{
+      if(!drag||event.pointerId!==drag.pointer||!validEditor(drag.current))return;
+      const ratio=drag.side/canvas.getBoundingClientRect().width;
+      $('#avatar-x').value=drag.w>drag.side?clamp(drag.left+(event.clientX-drag.x)*ratio*200/(drag.w-drag.side)):0;
+      $('#avatar-y').value=drag.h>drag.side?clamp(drag.top+(event.clientY-drag.y)*ratio*200/(drag.h-drag.side)):0;
+      draw();
+    });
+    for(const type of ['pointerup','pointercancel','lostpointercapture'])canvas.addEventListener(type,event=>{
+      if(drag&&event.pointerId!==drag.pointer)return;
+      drag=null;canvas.classList.remove('dragging');
+      if(canvas.hasPointerCapture(event.pointerId))canvas.releasePointerCapture(event.pointerId);
+    });
+    canvas.addEventListener('keydown',event=>{
+      if(!editor?.image||!['ArrowLeft','ArrowRight','ArrowUp','ArrowDown'].includes(event.key))return;
+      event.preventDefault();const key=['ArrowLeft','ArrowRight'].includes(event.key)?'x':'y',input=$('#avatar-'+key);
+      if(input.disabled)return;
+      input.value=clamp(Number(input.value)+(['ArrowLeft','ArrowUp'].includes(event.key)?-1:1)*(event.shiftKey?10:2));draw();
+    });
+  }
   document.addEventListener('input', event => {if (['avatar-zoom','avatar-x','avatar-y'].includes(event.target.id)) draw();});
   document.addEventListener('change', event => {if (event.target.id === 'avatar-file') {const file = event.target.files?.[0]; event.target.value = ''; loadFile(file);}});
 })();
