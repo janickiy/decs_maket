@@ -26,7 +26,7 @@
   const profile = account => account.id === S.activeAccountId ? S.profile : account.data.profile;
   const server = account => account.id === S.activeAccountId ? S.serverUrl : account.data.serverUrl || 'https://meetspace.team';
   const initials = name => name.trim().split(/\s+/).slice(0, 2).map(part => part[0] || '').join('');
-  const avatar = account => D.avatar(initials(profile(account).name), account.id === S.activeAccountId ? 'blue' : 'green');
+  const avatar = account => D.avatar(initials(profile(account).name), account.id === S.activeAccountId ? 'blue' : 'green', false, profile(account).avatar, account.id === S.activeAccountId ? 'data-avatar-self' : '');
   const serverLabel = account => server(account).replace(/^https?:\/\//, '').replace(/\/$/, '');
   const baseSave = D.save;
   D.save = () => {

@@ -16,7 +16,7 @@ function people() {
 }
 function elapsed() { const total=Math.max(0,Math.floor((Date.now()-(call().startedAt||Date.now()))/1000)); return `${String(Math.floor(total/60)).padStart(2,'0')}:${String(total%60).padStart(2,'0')}`; }
 function button(action,icon,label,active=false,extra='') { return `<button type="button" class="call-control ${active?'selected':''} ${extra}" data-action="${action}" aria-label="${label}" title="${label}" aria-pressed="${active}"><span>${I(icon)}</span><small>${label}</small></button>`; }
-function avatar(p,size='') { return `<span class="call-avatar ${p.color} ${size}">${E(p.initials)}</span>`; }
+function avatar(p,size='') { return `<span class="call-avatar ${p.color} ${size}">${p.own||p.color==='self'?D.avatarImage(D.state.profile.avatar)||E(p.initials):E(p.initials)}</span>`; }
 function bars() { return '<span class="voice-bars" aria-label="Говорит"><i></i><i></i><i></i><i></i></span>'; }
 function tile(p,mini=false) {
   const c=call();
