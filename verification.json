@@ -113,7 +113,8 @@
     "October 30 crop dragging: inspected mobile reference avatars.js pointer implementation. Desktop UI verified profile SE resize, frame move, out-of-bounds drag clamping, keyboard arrow, save/reload retaining 140%/77%/70%, group NW resize with synchronized preview/sliders; warning/error log empty. QA uses isolated origin and synthetic image.",
     "2026-10-30: compact avatar editor checked at 1280x720 and 1440x1000; drag updates position sliders; profile crop survives save/reload; reset restores 100%/0%/0%; group crop stays within image bounds at 300% zoom; cancel restores group editor. Screenshot: previews/avatar-crop-mobile.png.",
     "2026-10-30: sidebar avatar editor visually verified at 1280x720; all controls fit without scrolling; mouse drag updates horizontal/vertical sliders. Screenshot: previews/avatar-crop-sidebar.png.",
-    "2026-10-30: created custom group on isolated QA origin; uploaded synthetic PNG through new Photo group action, adjusted zoom to 300% and horizontal offset to 1%, saved and reloaded; reopening via avatar preserves photo and crop. Screenshot: previews/avatar-group-sidebar.png."
+    "2026-10-30: created custom group on isolated QA origin; uploaded synthetic PNG through new Photo group action, adjusted zoom to 300% and horizontal offset to 1%, saved and reloaded; reopening via avatar preserves photo and crop. Screenshot: previews/avatar-group-sidebar.png.",
+    "2026-10-31: audio microphone volume 0 and notification output selection survive reload; microphone demo starts/stops on tab change; video hide-participants persists; notification event and sound changes persist after saving/reloading; sound test disabled when muted and playable when enabled; no browser console errors."
   ],
   "viewports": [
     "1280x720",
@@ -131,7 +132,7 @@
     "Windows cmd launcher not executed on Windows; browser QA performed on macOS",
     "file:// browser QA unavailable due to browser protocol policy; HTTP version tested"
   ],
-  "latest_change": "Group photo editor accessible directly from group information via avatar camera button and Photo group action; same two-column crop editor for built-in and custom groups.",
+  "latest_change": "Separate Audio and Video settings; parameter set based on local go-recorder DeviceSettings.tsx and IntegrationsSettings.tsx. Stage /personal redirected to login, so live authenticated configuration was not verified.",
   "automated_accounts_checks": "Isolated Node VM using actual app modules and init/render: remove inactive, active and initial accounts; fallback without a primary; last deletion stores accounts [] with null active ID and reload does not recreate it; restore exact profile/preferences/messages; add after empty without data leakage; storage failure preserves accounts; direct URLs and Ctrl/Cmd K/N are guarded in empty mode; previous migration, switching and preference isolation retained.",
   "source_commit": "89302d36f1f3a5e260f15a4b672c18d5e5436eda",
   "source_url": "https://github.com/janickiy/meet-space/tree/89302d36f1f3a5e260f15a4b672c18d5e5436eda",
@@ -146,5 +147,15 @@
   "automated_meeting_editor_checks": "Isolated Node VM: create/schedule/edit/instant field contracts, calendar date default, existing 75-minute duration, saved access/chat/date/time/switches, title and textarea HTML escaping; instant omits schedule-only controls. Passed. app.js syntax passed.",
   "automated_completed_meeting_checks": "Actual app.js in isolated Node VM, handlers and registered submit listener: eight scenarios passed. Owned/foreign completed meetings hide edit and reject direct editor/submit without mutation/save; stale upcoming form rejects save after status changes to past; missing/empty edit IDs blocked; owned upcoming edit and new schedule succeed; foreign upcoming edit blocked.",
   "automated_meeting_information_design_checks": "Isolated Node VM: all six status/ownership combinations retain action/data-id contracts; past CTA navigates to recordings, owner edit/delete gates preserved. Long title/description HTML payloads and quoted IDs escaped. Accessible title and close/delete names, empty fields, permanent room, missing meeting guards checked.",
-  "automated_avatar_checks": "Read-only Node VM with actual avatars.js: 9 checks passed for profile/group saves, removal, independent groups and accounts, rollback on storage failure, stale-account and missing-group guards, safe data URLs and escaped IDs. 81 crop geometry combinations remain within source bounds. Changed JavaScript syntax checks pass."
+  "automated_avatar_checks": "Read-only Node VM with actual avatars.js: 9 checks passed for profile/group saves, removal, independent groups and accounts, rollback on storage failure, stale-account and missing-group guards, safe data URLs and escaped IDs. 81 crop geometry combinations remain within source bounds. Changed JavaScript syntax checks pass.",
+  "settings_reference": {
+    "source": "/Users/aleksandranickij/htdocs/go-recorder/frontend/src/components",
+    "files": [
+      "DeviceSettings.tsx",
+      "IntegrationsSettings.tsx"
+    ],
+    "live_url": "https://chat.stage.org.ru/personal",
+    "live_access": "Redirected to login; parameters taken from local source",
+    "limits": "Demo device selection and camera/microphone preview; test tone uses browser output. Email is a demo channel."
+  }
 }
