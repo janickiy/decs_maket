@@ -1,5 +1,5 @@
 {
-  "date": "2026-10-30",
+  "date": "2026-11-15",
   "type": "local interactive prototype",
   "syntax": "All 13 loaded JavaScript files pass node --check.",
   "assets": "All HTML and CSS local references exist",
@@ -114,7 +114,31 @@
     "2026-10-30: compact avatar editor checked at 1280x720 and 1440x1000; drag updates position sliders; profile crop survives save/reload; reset restores 100%/0%/0%; group crop stays within image bounds at 300% zoom; cancel restores group editor. Screenshot: previews/avatar-crop-mobile.png.",
     "2026-10-30: sidebar avatar editor visually verified at 1280x720; all controls fit without scrolling; mouse drag updates horizontal/vertical sliders. Screenshot: previews/avatar-crop-sidebar.png.",
     "2026-10-30: created custom group on isolated QA origin; uploaded synthetic PNG through new Photo group action, adjusted zoom to 300% and horizontal offset to 1%, saved and reloaded; reopening via avatar preserves photo and crop. Screenshot: previews/avatar-group-sidebar.png.",
-    "2026-10-31: audio microphone volume 0 and notification output selection survive reload; microphone demo starts/stops on tab change; video hide-participants persists; notification event and sound changes persist after saving/reloading; sound test disabled when muted and playable when enabled; no browser console errors."
+    "2026-10-31: audio microphone volume 0 and notification output selection survive reload; microphone demo starts/stops on tab change; video hide-participants persists; notification event and sound changes persist after saving/reloading; sound test disabled when muted and playable when enabled; no browser console errors.",
+    "November 15: presentation aspect ratio measured as 16:9 at 1440x900 and 1024x768 with open chat; default 1280x720 visually verified. Settings control absent, presentation/grid toggle and chat open/close work.",
+    "November 15: meetings list/tile toggle, date filters and meeting details modal work. Equal-width action cards and no page horizontal overflow at 1440x900 and 1024x768; 1280x720 visually verified. No browser warnings or errors.",
+    "November 15 reference revision: inspected live 8766 compare/tablet and standalone call preview; matched current grid/speaker layout rather than earlier presentation layout.",
+    "November 15 reference revision: grid, speaker mode, selecting self and remote participant, both rail pages, participants/chat tabs (including reselecting active tab), draft preservation across layout changes, and starting/stopping demo presentation verified in browser.",
+    "November 15 reference revision: 1280x720 gallery and speaker-with-chat screenshots saved; 1024x768 grid with chat fits without page horizontal overflow. Video cards and featured frame measured 16:9. Avatars visible after responsive legacy-style fix. Browser error/warning log empty.",
+    "November 15 Audio layout: inspected 1280x720, 1440x1000, 1024x768 and 900x800; aligned fields, consistent card widths and no page/card horizontal overflow. 760x800 correctly switches fields and microphone preferences to one column.",
+    "November 15 Audio layout: microphone volume changed 85 to 84 and persisted after reload, then restored to 85. Microphone device changed to external USB and restored. Test microphone shows demo level status and automatically restores the test button; speaker test starts and finishes without browser warnings or errors.",
+    "November 15 Audio layout: switching to Video removes the audio-only panel modifier and preserves the existing video card; returning to Audio retains original device and volume values. Screenshot previews/settings-audio-layout.jpg saved.",
+    "November 15 notification switches: all five notification controls use 34x20 switch styling. Disabled reminder, saved and reloaded to verify persistence, restored the initial enabled value with Space and saved. Other settings retained. No browser warnings/errors. Screenshot previews/settings-notification-switches.jpg saved.",
+    "Chat layout verified at 1280x720, 1024x768 and 760x800 without horizontal overflow",
+    "Selected two messages, forwarded to another chat, reloaded and verified original authors, attachment and ordering",
+    "Bulk deleted forwarded messages, restored the batch in its original order and verified that a draft survived; cleaned up QA messages",
+    "Keyboard Space toggles message selection; select all and cancel selection work",
+    "Chat message menu retains reply action; compact composer displays and cancels replies; message search returns matching results",
+    "Chat browser console contained no JavaScript errors after final reload",
+    "Meetings reference layout visually verified at 1280x720, 1024x768, 760x800 and 390x844 without horizontal overflow",
+    "Meeting search and combined participation/date filters update the result count and return the correct meeting; reset restores all upcoming meetings",
+    "Meetings list/grid switching works; each card shows date, time, status, duration and participation metadata",
+    "Info action opens meeting details; completed meeting details omit edit and copy-link actions",
+    "Compact meeting filters expand and collapse correctly; recordings/materials shortcut navigates to recordings",
+    "Final meetings screen has no browser JavaScript errors",
+    "Chat notification bell and chat ellipsis centers match at 1280, 1024 and 760 px; vertical center matches the search field.",
+    "Chat spacing fix: verified 1280x720, 1440x900 and 1024x768; search is 40 px tall and tabs remain 12 px below it, including an empty search and the Groups filter.",
+    "Chat message area has no horizontal overflow; bounded bubbles and attachments verified. Message selection checkbox and cancel remain functional; no JavaScript errors. Screenshot previews/chats-spacing-fix.jpg."
   ],
   "viewports": [
     "1280x720",
@@ -124,7 +148,10 @@
     "720x768",
     "640x768",
     "1280x800",
-    "600x720"
+    "600x720",
+    "1440x900",
+    "900x800",
+    "760x800"
   ],
   "known_limits": [
     "No backend, real authentication, video/audio calls or recording",
@@ -132,7 +159,7 @@
     "Windows cmd launcher not executed on Windows; browser QA performed on macOS",
     "file:// browser QA unavailable due to browser protocol policy; HTTP version tested"
   ],
-  "latest_change": "Separate Audio and Video settings; parameter set based on local go-recorder DeviceSettings.tsx and IntegrationsSettings.tsx. Stage /personal redirected to login, so live authenticated configuration was not verified.",
+  "latest_change": "Corrected chat sidebar flex sizing: search and equal-width tabs stay at the top while results scroll independently. Bounded conversation rows to 800 px and message bubbles to 520 px, tightened message spacing and made attachments shrink safely.",
   "automated_accounts_checks": "Isolated Node VM using actual app modules and init/render: remove inactive, active and initial accounts; fallback without a primary; last deletion stores accounts [] with null active ID and reload does not recreate it; restore exact profile/preferences/messages; add after empty without data leakage; storage failure preserves accounts; direct URLs and Ctrl/Cmd K/N are guarded in empty mode; previous migration, switching and preference isolation retained.",
   "source_commit": "89302d36f1f3a5e260f15a4b672c18d5e5436eda",
   "source_url": "https://github.com/janickiy/meet-space/tree/89302d36f1f3a5e260f15a4b672c18d5e5436eda",
@@ -157,5 +184,6 @@
     "live_url": "https://chat.stage.org.ru/personal",
     "live_access": "Redirected to login; parameters taken from local source",
     "limits": "Demo device selection and camera/microphone preview; test tone uses browser output. Email is a demo channel."
-  }
+  },
+  "chat_feature_checks": "Isolated VM harness passed selection, forwarding order/attachment payload/original author, hidden-chat exclusion, drafts, delete cleanup, undo ordering with new messages, account isolation, and save-failure rollback."
 }
