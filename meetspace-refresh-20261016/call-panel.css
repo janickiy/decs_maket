@@ -1,0 +1,275 @@
+.call-screen .meeting-chat {
+  --call-panel-feed: #f4eff6;
+  --call-panel-accent: #6e477c;
+  --call-panel-tint: #f0e6f4;
+  display: flex;
+  flex-direction: column;
+  flex: 0 0 clamp(260px, 25%, 350px);
+  align-self: stretch;
+  position: static;
+  width: auto;
+  min-width: 0;
+  min-height: 0;
+  padding: 0;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--surface);
+  color: var(--ink);
+  box-shadow: none;
+}
+
+:root[data-theme="dark"] .call-screen .meeting-chat {
+  --call-panel-feed: #24202c;
+  --call-panel-accent: #d5b2e4;
+  --call-panel-tint: #45344e;
+}
+
+.meeting-chat-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 10px 12px 4px 16px;
+}
+
+.meeting-chat-header h2 { font-size: 17px; }
+.meeting-chat .icon-button { color: var(--muted); }
+.meeting-chat .icon-button:hover { background: var(--call-panel-tint); }
+.meeting-chat :focus-visible { outline-color: var(--call-panel-accent); }
+
+.meeting-chat-tabs {
+  display: flex;
+  gap: 18px;
+  padding: 0 16px;
+  border-bottom: 1px solid var(--line);
+}
+
+.meeting-chat-tabs button {
+  position: relative;
+  min-height: 44px;
+  padding: 0 1px;
+  background: transparent;
+  color: var(--muted);
+  white-space: nowrap;
+  font-size: 13px;
+}
+
+.meeting-chat-tabs button[aria-selected="true"] {
+  color: var(--call-panel-accent);
+  font-weight: 600;
+}
+
+.meeting-chat-tabs button[aria-selected="true"]::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0;
+  height: 2px;
+  border-radius: 2px 2px 0 0;
+  background: currentColor;
+}
+
+.meeting-chat-pane {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-height: 0;
+  background: var(--call-panel-feed);
+}
+
+.meeting-chat-pane[hidden], .call-pending-files[hidden] { display: none; }
+.call-chat-feed, .call-participants-list {
+  min-height: 0;
+  flex: 1;
+  overflow: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  padding: 14px 12px;
+}
+
+.call-participants-list .wr-person > div {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.call-participants-list .wr-inline-actions {
+  flex-wrap: wrap;
+  margin-left: 0;
+}
+
+.call-chat-date { margin: 0 0 16px; text-align: center; }
+.call-chat-date span {
+  display: inline-block;
+  padding: 3px 11px;
+  border-radius: 20px;
+  background: var(--surface);
+  color: var(--muted);
+  font-size: 11px;
+}
+
+.call-chat-message { display: flex; margin-bottom: 10px; }
+.call-chat-message.mine { justify-content: flex-end; }
+.call-chat-bubble {
+  max-width: 96%;
+  min-width: 0;
+  padding: 9px 11px;
+  border: 1px solid var(--line);
+  border-radius: 14px 14px 14px 4px;
+  background: var(--surface);
+  box-shadow: 0 1px 3px #35233d0a;
+}
+
+.call-chat-message.mine .call-chat-bubble {
+  border-radius: 14px 14px 4px 14px;
+  background: var(--call-panel-tint);
+}
+
+.call-chat-author {
+  display: block;
+  margin-bottom: 3px;
+  color: var(--call-panel-accent);
+  font-size: 11px;
+}
+
+.call-chat-bubble > p {
+  color: var(--ink);
+  font-size: 12px;
+  line-height: 1.5;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.call-chat-time {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 4px;
+  margin-top: 5px;
+  color: var(--muted);
+  font-size: 10px;
+}
+
+.call-chat-time svg { width: 13px; height: 13px; color: var(--call-panel-accent); }
+.call-file-card, .call-pending-file {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  padding: 8px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--call-panel-feed);
+  color: var(--ink);
+}
+
+.call-file-card { margin-top: 8px; }
+.call-file-icon {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 30px;
+  height: 34px;
+  border-radius: 8px;
+  background: var(--call-panel-tint);
+  color: var(--call-panel-accent);
+}
+
+.call-file-card > span:nth-child(2), .call-pending-file > span:nth-child(2) { flex: 1; min-width: 0; }
+.call-file-card strong, .call-pending-file strong {
+  display: block;
+  overflow: hidden;
+  font-size: 11px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.call-file-card small, .call-pending-file small { display: block; color: var(--muted); font-size: 10px; }
+.call-file-card > svg { width: 16px; height: 16px; color: var(--call-panel-accent); }
+
+.call-chat-composer {
+  flex-shrink: 0;
+  padding: 9px 10px 10px;
+  border-top: 1px solid var(--line);
+  background: var(--surface);
+}
+
+.call-compose-box {
+  padding: 4px;
+  border: 1px solid var(--line);
+  border-radius: 13px;
+  background: var(--call-panel-feed);
+}
+
+.call-compose-box:focus-within { border-color: var(--call-panel-accent); }
+.call-compose-box textarea {
+  display: block;
+  width: 100%;
+  min-height: 42px;
+  max-height: 90px;
+  padding: 7px 8px 2px;
+  resize: none;
+  border: 0;
+  outline: none;
+  background: transparent;
+  color: var(--ink);
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+.call-compose-box textarea::placeholder { color: var(--muted); }
+.call-compose-actions { display: flex; align-items: center; gap: 2px; }
+.call-compose-actions .icon-button {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 9px;
+}
+
+.call-compose-actions .call-send {
+  margin-left: auto;
+  background: #734a83;
+  color: #fff;
+}
+
+.call-compose-actions .call-send:hover:not(:disabled) { background: #5d386b; }
+.call-emoji-picker { position: relative; }
+.call-emoji-picker summary { cursor: pointer; list-style: none; }
+.call-emoji-picker summary::-webkit-details-marker { display: none; }
+.call-emoji-options {
+  position: absolute;
+  z-index: 1;
+  bottom: calc(100% + 8px);
+  left: -36px;
+  display: flex;
+  gap: 2px;
+  padding: 5px;
+  border: 1px solid var(--line);
+  border-radius: 11px;
+  background: var(--surface);
+  box-shadow: 0 4px 18px #29173126;
+}
+
+.call-emoji-options button {
+  width: 33px;
+  height: 34px;
+  padding: 0;
+  border-radius: 8px;
+  background: transparent;
+  font-size: 17px;
+}
+
+.call-emoji-options button:hover { background: var(--call-panel-tint); }
+.call-pending-files { display: grid; gap: 5px; max-height: 90px; overflow-y: auto; margin-bottom: 6px; }
+.call-pending-file .icon-button { width: 32px; height: 32px; flex-shrink: 0; }
+.call-pending-file .icon-button svg { width: 15px; height: 15px; }
+
+@media (max-width: 779px) {
+  .call-screen .meeting-chat { flex: 1 1 0; }
+  .meeting-chat-header { padding: 3px 8px 0 13px; }
+  .meeting-chat-tabs { padding-inline: 13px; }
+  .meeting-chat-tabs button { min-height: 38px; }
+  .call-chat-feed, .call-participants-list { padding: 10px 12px; }
+  .call-chat-composer { padding: 6px 8px 8px; }
+  .call-compose-box textarea { min-height: 37px; }
+}

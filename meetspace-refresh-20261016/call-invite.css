@@ -1,0 +1,211 @@
+.modal.call-invite-modal {
+  --invite-paper: #fff;
+  --invite-card: #f3eff5;
+  --invite-line: #e6dfe9;
+  --invite-ink: #27222d;
+  --invite-muted: #685d70;
+  --invite-accent: #693d78;
+  --invite-soft: #eee5f2;
+  --invite-button-ink: #fff;
+  max-width: 680px;
+  padding: 28px;
+  border-color: var(--invite-line);
+  border-radius: 20px;
+  background: var(--invite-paper);
+  color: var(--invite-ink);
+}
+
+:root[data-theme="dark"] .modal.call-invite-modal {
+  --invite-paper: #25202b;
+  --invite-card: #302936;
+  --invite-line: #493d50;
+  --invite-ink: #f6f0f8;
+  --invite-muted: #c4b8cb;
+  --invite-accent: #d8b3e6;
+  --invite-soft: #46334f;
+  --invite-button-ink: #271a2d;
+}
+
+.modal-backdrop:has(.call-invite-modal) {
+  align-items: center;
+  background: #15101b9e;
+  backdrop-filter: blur(5px);
+}
+
+.call-invite-modal .modal-head {
+  margin-bottom: 10px;
+}
+
+.call-invite-modal .modal-head h2 {
+  font-size: clamp(20px, 3vw, 25px);
+  line-height: 1.2;
+}
+
+.call-invite-modal p,
+.call-invite-modal .modal-head button {
+  color: var(--invite-muted);
+}
+
+.call-invite-modal .modal-head button:hover,
+.call-invite-copy button:hover {
+  background: color-mix(in srgb, var(--invite-accent) 15%, var(--invite-soft));
+}
+
+.call-invite-title {
+  margin-bottom: 20px;
+  overflow-wrap: anywhere;
+}
+
+.call-invite-card {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 162px;
+  align-items: center;
+  gap: 22px;
+  padding: 20px;
+  border: 1px solid var(--invite-line);
+  border-radius: 16px;
+  background: var(--invite-card);
+}
+
+.call-invite-link h3 {
+  margin-bottom: 6px;
+}
+
+.call-invite-copy {
+  display: flex;
+  gap: 4px;
+  padding: 4px;
+  margin: 14px 0;
+  border: 1px solid var(--invite-line);
+  border-radius: 10px;
+  background: var(--invite-paper);
+}
+
+.call-invite-copy input {
+  flex: 1;
+  min-width: 0;
+  padding: 0 8px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: inherit;
+  font-size: 13px;
+  text-overflow: ellipsis;
+}
+
+.call-invite-copy input:focus {
+  text-overflow: clip;
+}
+
+.call-invite-copy button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  gap: 6px;
+  min-height: 44px;
+  padding: 0 10px;
+  border-radius: 7px;
+  background: var(--invite-soft);
+  color: var(--invite-accent);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.call-invite-copy button svg {
+  width: 16px;
+  height: 16px;
+}
+
+.call-invite-modal .call-invite-hint {
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.call-invite-qr {
+  margin: 0;
+  text-align: center;
+}
+
+.call-invite-code {
+  width: 100%;
+  max-width: 162px;
+  aspect-ratio: 1;
+  margin: 0 auto 9px;
+  padding: 4px;
+  border: 1px solid var(--invite-line);
+  border-radius: 12px;
+  background: #fff;
+}
+
+.call-invite-code svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.call-invite-qr figcaption {
+  display: grid;
+  gap: 3px;
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+.call-invite-qr figcaption span {
+  color: var(--invite-muted);
+  font-size: 11px;
+}
+
+.call-invite-footer {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+  padding-top: 18px;
+  border-top: 1px solid var(--invite-line);
+}
+
+.call-invite-footer .button.primary {
+  border-radius: 10px;
+  background: var(--invite-accent);
+  color: var(--invite-button-ink);
+}
+
+.call-invite-footer .button.primary:hover {
+  filter: brightness(0.94);
+}
+
+@media (max-width: 600px) {
+  .modal-backdrop:has(.call-invite-modal) {
+    padding: 12px;
+  }
+
+  .modal.call-invite-modal {
+    padding: 18px;
+    max-height: calc(100dvh - 24px);
+  }
+
+  .call-invite-title {
+    margin-bottom: 14px;
+  }
+
+  .call-invite-card {
+    grid-template-columns: minmax(0, 1fr);
+    padding: 14px;
+    gap: 14px;
+  }
+
+  .call-invite-code {
+    max-width: 140px;
+  }
+
+  .call-invite-footer {
+    margin-top: 14px;
+    padding-top: 14px;
+  }
+
+  .call-invite-footer .button {
+    width: 100%;
+    padding-inline: 10px;
+    white-space: normal;
+  }
+}
