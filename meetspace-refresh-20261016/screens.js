@@ -28,6 +28,7 @@
     `<div class="statusbar"><span>9:41</span><div class="status-indicators">${I("Signal")}${I("Wifi")}<span class="battery" aria-label="Заряд батареи"></span></div></div>`;
   const shell = (content, active = "meetings", extra = "") => {
     const screen = M.state.screen;
+    const conversation = ["thread", "chat-info"].includes(screen);
     const title =
       {
         meetings: "Встречи",
@@ -42,10 +43,10 @@
       ? `<button class="icon-button" data-action="screenSearch" aria-label="Поиск чатов" aria-expanded="${Boolean(M.state.searchOpen?.messages)}">${I("Search")}</button>`
       : screen === "meetings"
         ? `<button class="icon-button" data-go="calendar" aria-label="Открыть календарь">${I("CalendarDays")}</button><button class="icon-button" data-go="recordings" aria-label="Записи встреч">${I("CirclePlay")}</button>`
-        : screen === "settings"
+        : screen === "settings" || screen === "chat-info"
           ? ""
           : `<button class="icon-button" data-go="meetings" aria-label="Назад к встречам">${I("ArrowLeft")}</button>`;
-    return `<div class="shell tm-shell screen-${screen} ${screen === "thread" ? "thread-shell" : ""}">${status()}<div class="app-layout"><div class="app-main"><header class="app-header"><div class="tm-heading"><img src="assets/brand-mark.svg" class="tm-desktop-brand" alt="MeetSpace"/><h1>${E(title)}</h1></div><div class="header-actions">${headerAction}${["meetings", "messages", "thread"].includes(screen) ? M.renderNotificationBell?.() || "" : ""}</div></header><div class="tm-screen-stage"><main class="content ${extra}">${content}</main>${search ? `<button class="tm-fab chat-fab" data-action="newChat" aria-label="Новый чат">${I("Plus")}<span>Новый чат</span></button>` : ""}</div><nav class="bottom-nav" aria-label="Основная навигация">${nav(active)}</nav></div></div></div>`;
+    return `<div class="shell tm-shell screen-${screen} ${conversation ? "thread-shell" : ""}">${status()}<div class="app-layout"><div class="app-main"><header class="app-header"><div class="tm-heading"><img src="assets/brand-mark.svg" class="tm-desktop-brand" alt="MeetSpace"/><h1>${E(title)}</h1></div><div class="header-actions">${headerAction}${["meetings", "messages", "thread", "chat-info"].includes(screen) ? M.renderNotificationBell?.() || "" : ""}</div></header><div class="tm-screen-stage"><main class="content ${extra}">${content}</main>${search ? `<button class="tm-fab chat-fab" data-action="newChat" aria-label="Новый чат">${I("Plus")}<span>Новый чат</span></button>` : ""}</div><nav class="bottom-nav" aria-label="Основная навигация">${nav(active)}</nav></div></div></div>`;
   };
   M.shell = shell;
   const serverAddress = () =>
@@ -196,7 +197,7 @@
       )
       .map(
         (c) =>
-          `<button class="conversation ${M.state.screen === "thread" && M.state.chat === c.id ? "active" : ""}" data-action="chat" data-chat="${c.id}" data-kind="${c.kind}" data-search="${E(c.name.toLocaleLowerCase("ru"))}">${chatAvatar(c)}<span class="message-text"><h3>${E(c.name)}${M.chatIsMuted?.(c) ? `<span class="cr-muted-indicator" aria-label="Уведомления выключены">${I("BellOff")}</span>` : ""}</h3>${groupMeta(c)}<p>${E(M.chatPreview?.(c)?.text ?? c.preview)}</p></span><span class="conversation-meta">${E(M.chatPreview?.(c)?.time ?? c.time)}${c.unread ? `<span class="unread">${c.unread}</span>` : I("CheckCheck")}</span></button>`,
+          `<button class="conversation ${["thread", "chat-info"].includes(M.state.screen) && M.state.chat === c.id ? "active" : ""}" data-action="chat" data-chat="${c.id}" data-kind="${c.kind}" data-search="${E(c.name.toLocaleLowerCase("ru"))}">${chatAvatar(c)}<span class="message-text"><h3>${E(c.name)}${M.chatIsMuted?.(c) ? `<span class="cr-muted-indicator" aria-label="Уведомления выключены">${I("BellOff")}</span>` : ""}</h3>${groupMeta(c)}<p>${E(M.chatPreview?.(c)?.text ?? c.preview)}</p></span><span class="conversation-meta">${E(M.chatPreview?.(c)?.time ?? c.time)}${c.unread ? `<span class="unread">${c.unread}</span>` : I("CheckCheck")}</span></button>`,
       )
       .join(
         "",
@@ -258,26 +259,18 @@
       document.getElementById("message-input").focus();
     });
   };
+  M.renderChatLayout = (content, showThread) =>
+    shell(`<div class="messages-layout${showThread ? " show-thread" : ""}">${conversationList()}${content}</div>`, "messages", "flush");
   M.screens.messages = {
     title: "Чаты",
     group: "Рабочее пространство",
-    render: () =>
-      shell(
-        `<div class="messages-layout">${conversationList()}${thread()}</div>`,
-        "messages",
-        "flush",
-      ),
+    render: () => M.renderChatLayout(thread(), false),
     bind: bindMessages,
   };
   M.screens.thread = {
     title: "Беседа команды",
     group: "Рабочее пространство",
-    render: () =>
-      shell(
-        `<div class="messages-layout show-thread">${conversationList()}${thread()}</div>`,
-        "messages",
-        "flush",
-      ),
+    render: () => M.renderChatLayout(thread(), true),
     bind: bindMessages,
   };
   M.screens.calendar = {

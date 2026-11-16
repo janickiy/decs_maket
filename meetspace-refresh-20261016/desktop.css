@@ -127,6 +127,7 @@ kbd { font: 10px "Segoe UI", Inter, sans-serif; color: var(--muted); background:
 .desktop-app .account-panel-heading h2 { font-size: 1.55em; letter-spacing: -.5px; margin-bottom: 7px; }
 .desktop-app .account-panel-heading p { font-size: .89em; }
 .desktop-app .account-panel-heading > .account-avatar { display: none; }
+.desktop-app .accounts-total { display: none; }
 .desktop-app #account-notification-form { display: grid; gap: 16px; }
 .desktop-app #account-notification-form .account-section { background: var(--surface); border: 1px solid var(--line); border-radius: 9px; padding: 16px 22px 4px; box-shadow: 0 2px 3px #20203902; }
 .desktop-app .account-section h3 { font-size: .94em; margin-bottom: 7px; }
@@ -195,6 +196,7 @@ kbd { font: 10px "Segoe UI", Inter, sans-serif; color: var(--muted); background:
 .desktop-shortcuts { border-top: 1px solid var(--line); }
 .desktop-shortcuts > div { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 12px 0; border-bottom: 1px solid var(--line); font-size: 12px; }
 .desktop-help-note { font-size: 11px; line-height: 1.7; color: var(--muted); margin: 20px 0; }
+.desktop-help-footer { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; color: var(--muted); font-size: 11px; }
 .desktop-command-search { display: flex; align-items: center; gap: 12px; margin: 8px 0 15px; padding: 9px 14px; border: 1px solid var(--accent); border-radius: 7px; color: var(--accent); }
 .desktop-command-search input { min-width: 0; width: 100%; min-height: 30px; padding: 0; border: 0; background: transparent; color: var(--ink); outline: 0 !important; }
 .desktop-command-results { display: grid; gap: 4px; max-height: min(390px, 50dvh); overflow-y: auto; }

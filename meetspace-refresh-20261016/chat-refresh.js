@@ -40,6 +40,19 @@
   const message = id => data().messages.find(item => item.id === id && !item.hiddenForMe);
   const isSelecting = () => selection?.key === scope() && ['messages', 'thread'].includes(M.state.screen);
   const selectableMessages = () => data().messages.filter(item => !item.deleted && !item.hiddenForMe);
+  M.chatMaterialMessages = () => selectableMessages().map(item => ({
+    id: item.id,
+    text: item.text,
+    time: item.time,
+    author: author(item),
+    attachments: (item.attachments || []).map(file => ({
+      id: file.id,
+      name: file.name,
+      size: formatSize(file.size),
+      type: file.type,
+      photo: photoSource(file),
+    })),
+  }));
   const selectedMessages = () => isSelecting() ? selection.ids.map(message).filter(item => item && !item.deleted) : [];
   function selectionHeader() {
     const count = selectedMessages().length, all = count > 0 && count === selectableMessages().length;
@@ -170,7 +183,11 @@
     if (selection && selection.key !== scope()) selection = null;
     const d = data(), group = c.kind === 'group', selecting = isSelecting();
     const visibleMessages = d.messages.filter(item => !item.hiddenForMe);
-    const header = selecting ? selectionHeader() : `<button class="icon-button phone-back" data-go="messages" aria-label="Назад к чатам">${I('ArrowLeft')}</button><span class="chat-avatar ${group ? 'is-group' : ''}">${avatar(c.initials, c.tone, M.chatAvatarMarkup?.(c))}${group ? `<span class="group-avatar-badge" aria-label="Группа">${I('Users')}</span>` : ''}</span><div class="cr-contact-copy"><h3>${E(c.name)}${d.muted ? `<span class="cr-muted-indicator" aria-label="Уведомления выключены">${I('BellOff')}</span>` : ''}</h3><p>${group ? `Группа · ${memberCount(c.members.length)}` : 'В сети'}</p></div><span class="spacer"></span>${!group ? `<button class="icon-button personal-call-trigger" data-action="startPersonalCall" data-contact="${E(c.id)}" aria-label="Позвонить: ${E(c.name)}">${I('Phone')}</button>` : ''}<button class="icon-button" data-action="chatRefreshSearch" aria-label="Поиск в переписке">${I('Search')}</button><div class="cr-header-actions"><button class="icon-button cr-header-menu-trigger" data-action="chatRefreshHeader" aria-label="Действия с чатом" aria-haspopup="menu" aria-expanded="false" aria-controls="cr-chat-dropdown">${I('Ellipsis')}</button></div>`;
+    const portrait = `<span class="chat-avatar ${group ? 'is-group' : ''}">${avatar(c.initials, c.tone, M.chatAvatarMarkup?.(c))}${group ? `<span class="group-avatar-badge" aria-label="Группа">${I('Users')}</span>` : ''}</span>`;
+    const name = `${E(c.name)}${d.muted ? `<span class="cr-muted-indicator" aria-label="Уведомления выключены">${I('BellOff')}</span>` : ''}`;
+    const status = group ? `Группа · ${memberCount(c.members.length)}` : 'В сети';
+    const identity = M.renderChatInfoTrigger?.(c, portrait, name, status) || `${portrait}<div class="cr-contact-copy"><h3>${name}</h3><p>${status}</p></div>`;
+    const header = selecting ? selectionHeader() : `<button class="icon-button phone-back" data-go="messages" aria-label="Назад к чатам">${I('ArrowLeft')}</button>${identity}<span class="spacer"></span>${!group ? `<button class="icon-button personal-call-trigger" data-action="startPersonalCall" data-contact="${E(c.id)}" aria-label="Позвонить: ${E(c.name)}">${I('Phone')}</button>` : ''}<button class="icon-button" data-action="chatRefreshSearch" aria-label="Поиск в переписке">${I('Search')}</button><div class="cr-header-actions"><button class="icon-button cr-header-menu-trigger" data-action="chatRefreshHeader" aria-label="Действия с чатом" aria-haspopup="menu" aria-expanded="false" aria-controls="cr-chat-dropdown">${I('Ellipsis')}</button></div>`;
     return `<section class="thread cr-thread ${selecting ? 'cr-selecting' : ''}"><header class="thread-header">${header}</header>${M.renderPersonalCallBanner?.(c) || ''}${pinBar()}<div class="thread-log" id="thread-log" aria-label="Сообщения"><div class="chat-date">${c.created ? 'Вы создали группу' : 'Сегодня, 16 октября'}</div>${selecting ? '<p class="cr-gesture-hint">Нажмите на сообщения для выбора</p>' : visibleMessages.some(item => !item.deleted) ? '<p class="cr-gesture-hint">Удерживайте сообщение, чтобы открыть действия</p>' : ''}${visibleMessages.map(renderMessage).join('') || `<div class="group-welcome">${avatar(c.initials, c.tone, M.chatAvatarMarkup?.(c))}<h3>${E(c.name)}</h3><p>Напишите первое сообщение.</p></div>`}</div>${focused?.key === scope() ? '<div class="cr-context-return"><button data-action="chatRefreshLatest">К последним сообщениям ↓</button></div>' : ''}${selecting ? selectionToolbar() : `<div class="thread-create-actions"><button class="button primary" type="button" data-action="newChat" aria-label="Новый чат">${I('Plus')}Новый чат</button></div><div class="cr-composer-shell">${composerContext()}${!d.editing && d.pending.length ? `<div class="cr-pending-files">${attachments(d.pending, true)}</div>` : ''}<form class="composer" id="message-form"><button class="icon-button" type="button" data-action="chatRefreshAttach" aria-label="Прикрепить файлы" ${d.editing ? 'disabled' : ''}>${I('Paperclip')}</button><textarea id="message-input" rows="1" maxlength="10000" autocomplete="off" aria-label="${d.editing ? 'Редактировать сообщение' : 'Сообщение'}" placeholder="Написать сообщение…">${E(d.editing ? d.editText : d.draft)}</textarea><button class="icon-button send-button" aria-label="${d.editing ? 'Сохранить сообщение' : 'Отправить сообщение'}" ${canSend() ? '' : 'disabled'}>${I(d.editing ? 'Check' : 'ArrowUp')}</button></form></div>`}</section>`;
   };
   function canSend() {
@@ -228,7 +245,9 @@
   };
   function jump(id) {
     if (!message(id)) return;
-    focused = {key: scope(), id}; M.closeModal(); M.render();
+    focused = {key: scope(), id};
+    if (M.state.screen === 'chat-info') M.go('thread');
+    else { M.closeModal(); M.render(); }
     const element = document.getElementById('cr-' + id);
     element?.scrollIntoView({block: 'center', behavior: 'auto'});
     element?.focus({preventScroll: true});

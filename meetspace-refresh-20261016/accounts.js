@@ -7,8 +7,8 @@
   const preferences = () => Object.fromEntries(preferenceKeys.map((key) => [key, clone(s[key])]));
   const defaults = preferences();
   let accounts = [
-    { id: "personal", name: "Александр Соколов", email: "alex@example.org", server: "https://meet.example.org", preferences: clone(defaults) },
-    { id: "studio", name: "Александр · Студия", email: "alex@studio.example.org", server: "https://team.example.org", preferences: { ...clone(defaults), autoMute: true } },
+    { id: "personal", name: "Александр Соколов", email: "alex@example.org", server: "https://meet.example.org", about: "", preferences: clone(defaults) },
+    { id: "studio", name: "Александр · Студия", email: "alex@studio.example.org", server: "https://team.example.org", about: "", preferences: { ...clone(defaults), autoMute: true } },
   ];
   let activeId = "personal", addMode = "login";
   let addDraft = { server: "https://meet.example.org", name: "", email: "" };
@@ -21,16 +21,18 @@
     if (!account) return;
     account.name = M.state.profileName || account.name;
     account.email = M.state.profileEmail || account.email;
+    account.about = M.state.profileAbout || "";
     account.preferences = preferences();
   };
   const apply = () => {
     const account = active();
     Object.assign(s, clone(defaults), account ? clone(account.preferences) : {}, {
-      nameDraft: account?.name || "", profileSaved: false, notificationSaved: false,
+      nameDraft: account?.name || "", aboutDraft: account?.about || "", profileSaved: false, notificationSaved: false,
       connectionDraft: null, connectionOriginal: null, connectionSaved: false,
     });
     M.state.profileName = account?.name || "";
     M.state.profileEmail = account?.email || "";
+    M.state.profileAbout = account?.about || "";
     M.state.participantName = account?.name || "";
     if (account) M.getOnboardingState().server = account.server;
   };
@@ -51,7 +53,11 @@
     try { if (value.accounts.some((a) => new URL(a.server).protocol !== "https:")) return false; } catch { return false; }
     if (value.accounts.length && !value.accounts.some((a) => a.id === value.activeId)) return false;
     if (JSON.stringify(M.accountManagerSnapshot()) === JSON.stringify(value)) return false;
-    accounts = value.accounts.map((a) => ({ id: a.id, name: a.name, email: a.email, server: a.server, preferences: Object.fromEntries(preferenceKeys.map((key) => [key, clone(a.preferences[key] ?? defaults[key])])) }));
+    accounts = value.accounts.map((a) => ({
+      id: a.id, name: a.name, email: a.email, server: a.server,
+      about: typeof a.about === "string" ? a.about.trim() : "",
+      preferences: Object.fromEntries(preferenceKeys.map((key) => [key, clone(a.preferences[key] ?? defaults[key])])),
+    }));
     activeId = accounts.length ? value.activeId : null; addMode = value.addMode; addDraft = { server: value.addDraft.server, name: value.addDraft.name, email: value.addDraft.email };
     apply(); return true;
   };
@@ -60,7 +66,7 @@
     const existing = accounts.find((a) => a.email.toLowerCase() === email.toLowerCase() && a.server === normalizedServer);
     if (existing && mode === "register") return "Аккаунт с этой почтой уже добавлен на этом сервере. Перейдите ко входу.";
     capture();
-    const account = existing || { id: crypto.randomUUID(), name: name || email.split("@")[0], email, server: normalizedServer, preferences: clone(defaults) };
+    const account = existing || { id: crypto.randomUUID(), name: name || email.split("@")[0], email, server: normalizedServer, about: "", preferences: clone(defaults) };
     if (!existing) accounts.push(account);
     activeId = account.id; apply();
     return "";

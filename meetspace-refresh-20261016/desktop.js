@@ -61,12 +61,12 @@
   M.render = function (...args) {
     originalRender.apply(this, args);
     const screen = M.state.screen;
-    const active = ({thread: 'messages', recording: 'recordings'})[screen] || screen;
+    const active = ({thread: 'messages', 'chat-info': 'messages', recording: 'recordings'})[screen] || screen;
     document.querySelectorAll('[data-desktop-nav]').forEach(button => {
       if (button.dataset.desktopNav === active) button.setAttribute('aria-current', 'page');
       else button.removeAttribute('aria-current');
     });
-    const immersive = ![...destinations.map(x => x.screen), 'thread', 'recording', 'settings'].includes(screen);
+    const immersive = ![...destinations.map(x => x.screen), 'thread', 'chat-info', 'recording', 'settings'].includes(screen);
     root.classList.toggle('is-immersive', immersive);
     const themeButton = document.getElementById('desktop-theme');
     themeButton.innerHTML = I(M.state.theme === 'dark' ? 'Sun' : 'Moon');
@@ -77,7 +77,7 @@
     document.title = `${pageTitle} · MeetSpace для Windows`;
     const settingsHeader = document.querySelector('.screen-settings .tm-heading h1');
     if (settingsHeader) settingsHeader.textContent = 'Настройки';
-    if (['messages', 'thread'].includes(screen)) {
+    if (['messages', 'thread', 'chat-info'].includes(screen)) {
       document.querySelector('.app-header .header-actions')?.insertAdjacentHTML('afterbegin', `<button class="button primary desktop-new-chat" data-action="newChat">${I('Plus')}Новый чат</button>`);
     }
     const hint = document.querySelector('.cr-gesture-hint');
@@ -120,7 +120,21 @@
       button.title = button.getAttribute('aria-label');
       button.innerHTML = I(focus ? 'Minimize2' : 'Maximize2');
     },
-    desktopHelp: () => M.modal('Работайте в своём ритме', `<p class="desktop-help-intro">Встречи, сообщения и материалы команды в одном рабочем пространстве.</p><div class="desktop-shortcuts">${[['Ctrl + K', 'Поиск по разделам'], ['Ctrl + ,', 'Открыть настройки'], ['Alt + 1…5', 'Переключить основной раздел'], ['Enter', 'Отправить сообщение'], ['Shift + Enter', 'Новая строка в сообщении'], ['Esc', 'Закрыть диалог']].map(([key, label]) => `<div><span>${label}</span><kbd>${key}</kbd></div>`).join('')}</div><p class="desktop-help-note">Это интерактивный макет. Встречи, устройства и отправка сообщений демонстрационные. Изменения действуют до обновления страницы.</p><a class="button secondary" href="mobile.html" target="_blank" rel="noopener">Мобильная версия ${I('ArrowUpRight')}</a>`),
+    desktopHelp: () => M.modal('Работайте в своём ритме', `
+      <p class="desktop-help-intro">Встречи, сообщения и материалы команды в одном рабочем пространстве.</p>
+      <div class="desktop-shortcuts">${[
+        ['Ctrl + K', 'Поиск по разделам'],
+        ['Ctrl + ,', 'Открыть настройки'],
+        ['Alt + 1…5', 'Переключить основной раздел'],
+        ['Enter', 'Отправить сообщение'],
+        ['Shift + Enter', 'Новая строка в сообщении'],
+        ['Esc', 'Закрыть диалог'],
+      ].map(([key, label]) => `<div><span>${label}</span><kbd>${key}</kbd></div>`).join('')}</div>
+      <p class="desktop-help-note">Это интерактивный макет. Встречи, устройства и отправка сообщений демонстрационные. Изменения действуют до обновления страницы.</p>
+      <footer class="desktop-help-footer">
+        <a class="button secondary" href="mobile.html" target="_blank" rel="noopener">Мобильная версия ${I('ArrowUpRight')}</a>
+        <span>Версия приложения 1.0.0</span>
+      </footer>`),
     desktopSearch: () => {
       M.modal('Быстрый переход', '<label class="desktop-command-search">' + I('Search') + '<input id="desktop-command-input" type="search" role="combobox" aria-expanded="true" aria-autocomplete="list" aria-controls="desktop-command-results" aria-label="Найти раздел" placeholder="Встречи, чаты, настройки…" autocomplete="off" /></label><div id="desktop-command-results" class="desktop-command-results" role="listbox" aria-label="Разделы"></div><div class="desktop-command-footer"><span><kbd>↑</kbd> <kbd>↓</kbd> выбор</span><span><kbd>Enter</kbd> открыть</span><span><kbd>Esc</kbd> закрыть</span></div>', () => {
         const input = document.getElementById('desktop-command-input');
